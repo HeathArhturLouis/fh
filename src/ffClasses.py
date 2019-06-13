@@ -8,11 +8,12 @@ import feedparser
 #enmerated source types
 
 class ffEntry:
-	def __init__(self, eData, eSource):
+	def __init__(self, eData, eSource, fields):
 		#Feed parser entry structure
 		self.data = eData
 		#name of the source
 		self.source = eSource
+		self.fields = fields
 
 class ffSource:
 	'''
@@ -28,15 +29,20 @@ class ffSource:
 		self.type = sType
 
 	def parse(self):
-		'''
+		''' 
 		parse source and return entries
 		'''
 		if(self.type == self.ffSourceT.RSS or self.type == self.ffSourceT.ATOM):
 			pFeed = feedparser.parse(self.adress)
 			#set source name to origin feeds title
 			self.name = pFeed.feed.title
+
+			fields = []
+			#generate field list
+			for field in pFeed:
+				fields.append(field)
 			#return list of [entry, sourceName] pairs
-			return [ ffEntry( entry , self.name) for entry in pFeed.entries]
+			return [ ffEntry( entry , self.name, fields) for entry in pFeed.entries]
 
 class ffChannel:
 	def __init__(self, fTitle):

@@ -155,7 +155,7 @@ class ffMainFeed:
 			try:
 				newsbox_content += [blank, urwid.Padding(urwid.AttrWrap( urwid.Text(ffEntry.data[field], align='center', wrap='space'), 'body0' ), align='center',width=('relative', 80) ),]
 			except:
-				pass
+				pass	
 
 		newsbox_content += [blank, urwid.Padding(urwid.AttrWrap( urwid.Text(ffEntry.source, align='center', wrap='space'), 'body0' ), align='center',width=('relative', 80) ), ]
 		return urwid.ListBox(newsbox_content)
@@ -209,9 +209,12 @@ def main():
 	else:
 		screen = urwid.raw_display.Screen()
 
-	frame = urwid.Columns([ ( 'weight', 7 ,self.feedbox) , ('weight', 3, self.entrybox)])
+	feedbox = 
+	entrybox = 
 
-	urwid.MainLoop(frame.frame, palette, screen, input_filter=input_filter , unhandled_input=unhandled).run()
+	frame = urwid.Columns([ ( 'weight', 7 ,feedbox) , ('weight', 3, self.entrybox)])
+
+	urwid.MainLoop(frame, palette, screen, input_filter=input_filter , unhandled_input=unhandled).run()
 
 if __name__ == '__main__':
 	main()
