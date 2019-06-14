@@ -1,9 +1,9 @@
 import urwid
 import urwid.raw_display
 import urwid.web_display
-import ffClasses
 import sys
 import ffCursesClasses
+import ffClasses
 
 
 palette = [
@@ -41,12 +41,6 @@ frame = []
 ###############################MAIN LOOP######################
 def main():
 	###############################################
-	newChannel = ffClasses.ffChannel('Testing Channel')
-	newChannel.addSourceAdress('https://hnrss.org/newest', ffClasses.ffSource.ffSourceT.RSS)
-	newChannel.addSourceAdress('http://rss.slashdot.org/Slashdot/slashdotMain', ffClasses.ffSource.ffSourceT.RSS)
-	newChannel.addSourceAdress('https://feedpress.me/drudgereportfeed', ffClasses.ffSource.ffSourceT.RSS)
-
-	newChannel.update()
 	###############################################
 	# use appropriate Screen class
 	if urwid.web_display.is_web_request():
@@ -61,9 +55,11 @@ def main():
 		#feedbox.footer = urwid.AttrWrap(urwid.Text([u"Pressed: ", button.get_label()]), 'header')
 		feedbox.footer = generateEntrybox(newChannel.entries[3], 3)
 
-	feedbox = ffCursesClasses.ffFeedViewer(newChannel)
+	#feedbox = ffCursesClasses.ffFeedViewer(newChannel)
+	feedbox = ffCursesClasses.ffCUI()
+	#feedbox = ffCursesClasses.ffFeedSelector([newChannel, newChannel, newChannel], lambda x : x)
 
-	global frame
+	global frames
 	#frame = urwid.Columns([ ( 'weight', 7 , feedbox) , ('weight', 3, entrybox)])
 	frame = feedbox
 
