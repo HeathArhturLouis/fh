@@ -25,10 +25,10 @@ newChannel2.addSourceAdress('http://rss.slashdot.org/Slashdot/slashdotMain', ffC
 newChannel2.update()
 
 
-newChannel3 = ffClasses.ffChannel('Testing Channel 3')
+newChannel3 = ffClasses.ffChannel('quickBoy Lorem-rss 5sec')
 #newChannel3.addSourceAdress('https://hnrss.org/newest', ffClasses.ffSource.ffSourceT.RSS)
 #newChannel3.addSourceAdress('http://rss.slashdot.org/Slashdot/slashdotMain', ffClasses.ffSource.ffSourceT.RSS)
-newChannel3.addSourceAdress('https://feedpress.me/drudgereportfeed', ffClasses.ffSource.ffSourceT.RSS)
+newChannel3.addSourceAdress('http://lorem-rss.herokuapp.com/feed?unit=second&interval=5', ffClasses.ffSource.ffSourceT.RSS)
 newChannel3.update()
 
 pickle.dump([newChannel1, newChannel2, newChannel3], f)

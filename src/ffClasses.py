@@ -65,6 +65,7 @@ class ffChannel:
 		'''
 		Update channel entries from sources
 		'''
+		self.entries = []
 		for source in self.sources:
 			self.entries += source.parse()
 

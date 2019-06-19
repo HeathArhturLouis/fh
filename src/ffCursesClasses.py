@@ -169,7 +169,6 @@ class ffFeedViewer(urwid.WidgetWrap):
 		self.entrybox = generateEntrybox(ffChannel.entries[0], self.visitAdress)
 		super(ffFeedViewer, self).__init__(urwid.Columns([('weight', 7, self.feedbox),('weight', 3, self.entrybox)]))
 
-
 class ffFeedSelector(urwid.WidgetWrap):
 	'''
 	select a feed, then call signal with selected feed as argument
@@ -205,24 +204,36 @@ class ffMenuBar(urwid.WidgetWrap):
 
 	FEEDS | EDIT | OPTIONS buttons
 	'''
+	def refresh(self, button):
+		#are we currently viewing a feed?
+		#refresh contents of all feeds
+		for feed in self.channels:
+			feed.update()
+
+		if( isinstance(self.getScreen(), ffFeedViewer)):
+			self.changeView(ffFeedViewer(self.getScreen().channel))
+
+
 	def openFeeds(self, button):
 		self.changeView(ffFeedSelector(self.channels, lambda x : x, self.changeView))
-
 	def openEdit(self, button):
 		pass
 	def openOptions(self, button):
 		pass
 
-	def __init__(self, changeView, feeds):
+	def __init__(self, feeds, changeView,  getScreen):
 		self.channels = feeds
 		self.changeView = changeView
+		self.getScreen = getScreen
 		self.buttons = [
 						('weight',1,blank),
-						('weight',20,urwid.AttrMap(ffIdButton('FEEDS', self.openFeeds, 0), 'fbbody1')),
+						('weight',20,urwid.AttrMap(ffIdButton('REFRESH', self.refresh, 0), 'fbbody1')),
 						('weight',1,blank),
-						('weight',20,urwid.AttrMap(ffIdButton('EDIT', self.openEdit, 1), 'fbbody1')),
+						('weight',20,urwid.AttrMap(ffIdButton('FEEDS', self.openFeeds, 1), 'fbbody1')),
 						('weight',1,blank),
-						('weight',20,urwid.AttrMap(ffIdButton('OPTIONS',self.openOptions, 2), 'fbbody1')),
+						('weight',20,urwid.AttrMap(ffIdButton('EDIT', self.openEdit, 2), 'fbbody1')),
+						('weight',1,blank),
+						('weight',20,urwid.AttrMap(ffIdButton('OPTIONS',self.openOptions, 3), 'fbbody1')),
 						('weight',1,blank),]
 		box = urwid.ListBox([
 			blank,
@@ -238,6 +249,12 @@ class ffMenuBar(urwid.WidgetWrap):
 class ffCUI(urwid.WidgetWrap):
 
 	channels = []
+
+	def getCurrent(self):
+		'''
+		return currently displayed screen widget
+		'''
+		return self.screen
 
 	def loadChannels(self):
 		with open(ffFilePath, 'rb') as f:
@@ -257,7 +274,7 @@ class ffCUI(urwid.WidgetWrap):
 		#start by loading channels
 		self.loadChannels()
 		#menu up top
-		self.options = ffMenuBar(self.changeView, self.channels)
+		self.options = ffMenuBar(self.channels, self.changeView, self.getCurrent)
 
 		#display down below
 
