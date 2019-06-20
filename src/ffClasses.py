@@ -23,6 +23,7 @@ class ffSource:
 		RSS = -1
 		ATOM = -2
 
+
 	def __init__(self, sAdress, sType):
 		self.adress = sAdress
 		self.name = sAdress

@@ -1,14 +1,15 @@
-
 '''
 Classes partaining to the edditing of newsfeeds
 '''
+import urwid
+import ffCursesClasses
 
+blank = urwid.Divider()
 
 class ffChannelInfoDialog(urwid.WidgetWrap):
 	#Dialog allowing the editing of feed information and saving (should check for errors)
 	
 	def addSource(self):
-		
 		#go through dialog,
 		#generate source
 		print('kesi')
@@ -27,41 +28,48 @@ class ffChannelInfoDialog(urwid.WidgetWrap):
 		#addSource button
 		#Save and Cancel Changes buttons
 
-		titleEdit = urwid.Edit('TITLE' , self.channel.title)
+		titleEdit = urwid.Edit('TITLE:\t' , self.channel.title)
 		sourcesListText = []
 		for source in self.channel.sources:
 			#add source to sources display
-			sourcesListText += urwid.ListBox([
-								urwid.Edit('NAME:', source.name),
-								blank,
-								urwid.Edit('TITLE:', source.title),
-								blank,
-								urwid.Edit('TYPE:', source.type),
-								])
+			sourcesListText += [
+				urwid.Edit('NAME:\t', source.name),
+				blank,
+				urwid.Edit('ADRESS:\t', source.adress),
+				blank,
+				urwid.Edit('TYPE:\t', str(source.type)),
+				blank,
+				blank,
+			]
 
-		addSourceButton = ffIdButton('Add Source', addSource)
+		addSourceButton = ffCursesClasses.ffIdButton('Add Source', self.addSource)
 
-		saveCancelB = urwid.Columns([('weight',5,self.saveB ), ('weight', 1, blank),('weight',5 ,self.cancelB)])
+		saveCancelB = urwid.Columns([('weight',5,self.saveB ), ('weight',1, blank),('weight',5 ,self.cancelB)])
+
+		return urwid.ListBox(
+							[titleEdit,
+							blank,]
+							+sourcesListText
+							+[addSourceButton, blank, saveCancelB])
 
 
-	def saveCh():
+	def saveCh(self):
 		pass
 
-	def cancelCh():
+	def cancelCh(self):
 		pass
 
-	def __init__(self, ffChannel, changeView):
-		self.channel = ffChannel
+	def __init__(self, ffFeedViewer, changeView):
+		self.channel = ffFeedViewer.channel
 		#change view function
 		self.changeView = changeView
 		#bind save and cancel buttons
-		self.saveB = ffIdButton('SAVE CHANGES', self.saveCh)
-		self.cancelB = ffIdButton('CANCEL CHANGES', self.cancelCh)
+		self.saveB = ffCursesClasses.ffIdButton('SAVE CHANGES', self.saveCh)
+		self.cancelB = ffCursesClasses.ffIdButton('CANCEL CHANGES', self.cancelCh)
 
 		#populate dialog
-		self.screen = populateEntries()
-		super(ffCUI, self).__init__(self.screen)
-
+		self.screen = self.populateEntries(self.channel)
+		super(ffChannelInfoDialog, self).__init__(self.screen)
 
 
 class ffEditDialog(urwid.WidgetWrap):
