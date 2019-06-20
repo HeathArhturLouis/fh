@@ -5,10 +5,11 @@ import urwid
 import ffCursesClasses
 
 blank = urwid.Divider()
+blank1 = urwid.AttrMap(blank, 'fbbody0')
 
 class ffChannelInfoDialog(urwid.WidgetWrap):
 	#Dialog allowing the editing of feed information and saving (should check for errors)
-	
+
 	def addSource(self):
 		#go through dialog,
 		#generate source
@@ -28,18 +29,18 @@ class ffChannelInfoDialog(urwid.WidgetWrap):
 		#addSource button
 		#Save and Cancel Changes buttons
 
-		titleEdit = urwid.Edit('TITLE:\t' , self.channel.title)
+		titleEdit = urwid.AttrMap(urwid.Edit('TITLE:\t' , self.channel.title), 'fbbody1')
 		sourcesListText = []
 		for source in self.channel.sources:
 			#add source to sources display
 			sourcesListText += [
-				urwid.Edit('NAME:\t', source.name),
-				blank,
-				urwid.Edit('ADRESS:\t', source.adress),
-				blank,
-				urwid.Edit('TYPE:\t', str(source.type)),
-				blank,
-				blank,
+				urwid.AttrMap(urwid.Edit('NAME:', source.name), 'fbbody1'),
+				blank1,
+				urwid.AttrMap(urwid.Edit('ADRESS:', source.adress), 'fbbody1'),
+				blank1,
+				urwid.AttrMap(urwid.Edit('TYPE:', str(source.type)), 'fbbody1'),
+				blank1,
+				blank1,
 			]
 
 		addSourceButton = ffCursesClasses.ffIdButton('Add Source', self.addSource)
@@ -48,9 +49,9 @@ class ffChannelInfoDialog(urwid.WidgetWrap):
 
 		return urwid.ListBox(
 							[titleEdit,
-							blank,]
+							blank1,]
 							+sourcesListText
-							+[addSourceButton, blank, saveCancelB])
+							+[addSourceButton, blank1, saveCancelB])
 
 
 	def saveCh(self):

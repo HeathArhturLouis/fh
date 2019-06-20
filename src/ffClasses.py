@@ -6,7 +6,7 @@ A channel is a feed with multiple sources
 '''
 import feedparser
 #enmerated source types
-
+#testing github atom#
 class ffEntry:
 	def __init__(self, eData, eSource, fields):
 		#Feed parser entry structure
@@ -30,7 +30,7 @@ class ffSource:
 		self.type = sType
 
 	def parse(self):
-		''' 
+		'''
 		parse source and return entries
 		'''
 		if(self.type == self.ffSourceT.RSS or self.type == self.ffSourceT.ATOM):
