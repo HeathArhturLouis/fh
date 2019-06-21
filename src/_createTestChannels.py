@@ -4,9 +4,7 @@ import pickle
 
 '''
 Create 3 demo feeds and pickle them to the save file
-
 '''
-
 
 f = open('../data/channels.pkl', 'wb')
 
@@ -18,14 +16,14 @@ newChannel1.addSourceAdress('https://hnrss.org/newest', ffClasses.ffSource.ffSou
 newChannel1.update()
 
 
-newChannel2 = ffClasses.ffChannel('Testing Channel 2')
-#newChannel2.addSourceAdress('https://hnrss.org/newest', ffClasses.ffSource.ffSourceT.RSS)
+newChannel2 = ffClasses.ffChannel('Trip Sources 2')
+newChannel2.addSourceAdress('https://hnrss.org/newest', ffClasses.ffSource.ffSourceT.RSS)
 newChannel2.addSourceAdress('http://rss.slashdot.org/Slashdot/slashdotMain', ffClasses.ffSource.ffSourceT.RSS)
-#newChannel2.addSourceAdress('https://feedpress.me/drudgereportfeed', ffClasses.ffSource.ffSourceT.RSS)
+newChannel2.addSourceAdress('https://feedpress.me/drudgereportfeed', ffClasses.ffSource.ffSourceT.RSS)
 newChannel2.update()
 
 
-newChannel3 = ffClasses.ffChannel('quickBoy Lorem-rss 5sec')
+newChannel3 = ffClasses.ffChannel('quickBoy Lorem-rss 5sec 3')
 #newChannel3.addSourceAdress('https://hnrss.org/newest', ffClasses.ffSource.ffSourceT.RSS)
 #newChannel3.addSourceAdress('http://rss.slashdot.org/Slashdot/slashdotMain', ffClasses.ffSource.ffSourceT.RSS)
 newChannel3.addSourceAdress('http://lorem-rss.herokuapp.com/feed?unit=second&interval=5', ffClasses.ffSource.ffSourceT.RSS)

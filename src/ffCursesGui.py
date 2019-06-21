@@ -5,7 +5,6 @@ import sys
 import ffCursesClasses
 import ffClasses
 
-
 palette = [
 	('body','black','light gray', 'standout'),
 	('fbbody0', 'light gray', 'black',  'standout'),
@@ -20,8 +19,6 @@ palette = [
 	('buttn','black','dark cyan'),
 	('buttnf','white','dark blue','bold'),
 	]
-
-
 
 def unhandled(key):
 	if(key=='esc' or key=='q'):

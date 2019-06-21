@@ -1,12 +1,10 @@
 '''
 Definitions of a forcefeed channel
 
-
 A channel is a feed with multiple sources
 '''
 import feedparser
 #enmerated source types
-#testing github atom#
 class ffEntry:
 	def __init__(self, eData, eSource, fields):
 		#Feed parser entry structure
@@ -16,8 +14,6 @@ class ffEntry:
 		self.fields = fields
 
 class ffSource:
-	'''
-	'''
 	#enum type for possible source types
 	class ffSourceT:
 		RSS = -1
@@ -80,9 +76,7 @@ def main():
 	newChannel = ffChannel('Testing Channel')
 	newChannel.addSourceAdress('https://hnrss.org/newest', ffSource.ffSourceT.RSS)
 	newChannel.addSourceAdress('http://rss.slashdot.org/Slashdot/slashdotMain', ffSource.ffSourceT.RSS)
-
 	newChannel.update()
-
 	newChannel.printTitles()
 
 if __name__ == '__main__':

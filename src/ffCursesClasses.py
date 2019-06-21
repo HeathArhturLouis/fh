@@ -107,7 +107,7 @@ def generateFeedbox(ffEntries, binding, offset=False):
 	Return urwid ListBox with list Walker containing the titles of Entries
 	'''
 	i = 0
-	colors = ['fbbody0', 'fbbody1'] 
+	colors = ['fbbody0', 'fbbody1']
 	feedbox_content = []
 	for entry in ffEntries:
 			if('link' in entry.data):
@@ -192,12 +192,12 @@ class ffFeedSelector(urwid.WidgetWrap):
 		i = 0
 		for channel in self.channels:
 			buttons += [
-						urwid.AttrMap(ffChannelButton(channel.title, self.callSignal, channel), colors[i%2]), 
+						urwid.AttrMap(ffChannelButton(channel.title, self.callSignal, channel), colors[i%2]),
 					]
 			i += 1
 
 		box = urwid.LineBox(urwid.ListBox( [urwid.LineBox(urwid.AttrMap(urwid.Text('SELECT A CHANNEL:', 'center'), 'fbbody1' )), urwid.LineBox(urwid.AttrMap(urwid.Pile(buttons), colors[1]) )]))
-		box = urwid.AttrMap(urwid.Padding( urwid.AttrMap(box, 'fbbody1') , align='center', width=('relative', 50)),'fbbody0')
+		box = urwid.AttrMap(urwid.Padding( urwid.AttrMap(box, 'fbbody1'), align='center', width=('relative', 50)),'fbbody0')
 
 		super(ffFeedSelector, self).__init__(box)
 
