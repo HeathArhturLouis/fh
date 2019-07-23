@@ -43,6 +43,8 @@ class ffSource:
 
 class ffChannel:
 	def __init__(self, fTitle):
+		#id for identification, set to positive int during session
+		self.id = -1
 		#channel title
 		self.title = fTitle
 		#sources/feeds in channel, list of html adresses saved as strings

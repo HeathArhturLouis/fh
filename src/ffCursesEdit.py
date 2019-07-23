@@ -3,6 +3,7 @@ Classes partaining to the edditing of newsfeeds
 '''
 import urwid
 import ffCursesClasses
+import ffClasses
 
 blank = urwid.Divider()
 blank1 = urwid.AttrMap(blank, 'fbbody1')
@@ -15,37 +16,39 @@ class ffChannelInfoDialog(urwid.WidgetWrap):
 	def addSource(self, button):
 		#go through dialog,
 		#generate source
-		print('kesi')
 		pass
 
-	def saveCh(self):
-		pass
+	def saveCh(self, button):
+		#Generate new channel with same Id from provided data
+		newChannel = ffClasses.ffChannel(self.titleEdit.base_widget.get_edit_text())
+		newChannel.id = self.channel.id
 
-	def cancelCh(self):
+
+		for source in self.sourcesListText:
+#TODO: make sure its a legit url address
+			source = source.base_widget
+			uri = source[2].base_widget.get_edit_text()
+			type = source[4].base_widget.get_edit_text()
+			newChannel.addSource(ffClasses.ffSource(uri, type))
+
+
+	#Send new channel back to CUI to replace with new one
+		newChannel.update()
+		self.replaceChannel(newChannel)
+
+
+	def cancelCh(self, button):
 		pass
 
 	def populateEntries(self, ffChannel):
 		#create display with editable options for self.channel and return listbox of it
-
-		#attributes of a cannel are:
-		#Title -- name of channel
-		#Sources -- list of ffSources
-		#	-Each source has:
-		#		Name
-		#		Adress
-		#		Type
-		#addSource button
-		#Save and Cancel Changes buttons
-
-		titleEdit = urwid.AttrMap(urwid.Edit('TITLE:' , self.channel.title), 'fbbody0')
-		sourcesListText = []
+		self.titleEdit = urwid.AttrMap(urwid.Edit('TITLE:' , self.channel.title), 'fbbody0')
+		self.sourcesListText = []
 		i = 0
 		for source in self.channel.sources:
 			#add source to sources display
-			sourcesListText += [ urwid.Padding(urwid.LineBox(urwid.Pile(
-				[urwid.AttrMap(urwid.Text('SOURCE ' + str(i), 'center'), 'fbbody1' ),
-				blank1,
-				urwid.AttrMap(urwid.Edit('NAME:', source.name), 'fbbody0'),
+			self.sourcesListText += [ urwid.Padding(urwid.LineBox(urwid.Pile(
+				[urwid.AttrMap(urwid.Text('SOURCE ' + source.name, 'center'), 'fbbody1' ),
 				blank1,
 				urwid.AttrMap(urwid.Edit('ADRESS:', source.adress), 'fbbody0'),
 				blank1,
@@ -54,12 +57,12 @@ class ffChannelInfoDialog(urwid.WidgetWrap):
 			i += 1
 
 
-		addSourceButton = urwid.AttrMap(ffCursesClasses.ffIdButton('ADD SOURCE', self.addSource), 'fbbody0')
-		deleteSourceButton = urwid.AttrMap(ffCursesClasses.ffIdButton('DELETE SOURCE', self.deleteSource), 'fbbody0')
-		saveCancelB = urwid.AttrMap(urwid.Columns([
-												('weight',5, addSourceButton),
+		self.addSourceButton = urwid.AttrMap(ffCursesClasses.ffIdButton('ADD SOURCE', self.addSource), 'fbbody0')
+		self.deleteSourceButton = urwid.AttrMap(ffCursesClasses.ffIdButton('DELETE SOURCE', self.deleteSource), 'fbbody0')
+		self.saveCancelB = urwid.AttrMap(urwid.Columns([
+												('weight',5, self.addSourceButton),
 												('weight',1, blank1),
-												('weight',5, deleteSourceButton),
+												('weight',5, self.deleteSourceButton),
 												('weight',1, blank1),
 												('weight',5, self.saveB),
 												('weight',1, blank1),
@@ -70,12 +73,15 @@ class ffChannelInfoDialog(urwid.WidgetWrap):
 							[
 							urwid.LineBox(urwid.Text( 'EDIT CHANNEL ATTRIBUTES:','center')),
 							blank1,
-							titleEdit,
+							self.titleEdit,
 							blank1,]
-							+sourcesListText
-							+[urwid.LineBox(saveCancelB)])), 'fbbody1' ), align='center', width=('relative', 50)), 'fbbody0')
+							+self.sourcesListText
+							+[urwid.LineBox(self.saveCancelB)])), 'fbbody1' ), align='center', width=('relative', 50)), 'fbbody0')
 
-	def __init__(self, ffFeedViewer, changeView):
+	def __init__(self, ffFeedViewer, changeView, replaceChannel):
+		#values for various sources
+		self.replaceChannel = replaceChannel
+		self.sourcesListText = []
 		self.channel = ffFeedViewer.channel
 		#change view function
 		self.changeView = changeView
@@ -86,12 +92,3 @@ class ffChannelInfoDialog(urwid.WidgetWrap):
 		#populate dialog
 		self.screen = self.populateEntries(self.channel)
 		super(ffChannelInfoDialog, self).__init__(self.screen)
-
-class ffEditDialog(urwid.WidgetWrap):
-	#Dialog for editing an existing feed or adding a new feed
-	#=start
-	#choose a feed to edit | ffFeedSelector with some minor modifications (newFeed Option)
-	#feed info dialog | ffFeedInfoDialog
-	#=write
-	#back to choose a feed
-	a = 'a'
